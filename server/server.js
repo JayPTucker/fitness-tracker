@@ -1,17 +1,26 @@
 import express from "express";
 import dotenv from "dotenv";
+import authRoutes from "./routes/authRoutes.js";
+import pool from "./db/connection.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 
+// USE THIS FOR DEVELOPMENT
+app.use(cors());
+
+// USE THIS FOR PRODUCTION
+// app.use(
+//   cors({
+//     origin: "https://yourdomain.com"
+//   })
+// );
+
 app.use(express.json());
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
-});
-
-import pool from "./db/connection.js";
+app.use("/api/auth", authRoutes);
 
 (async () => {
   try {
@@ -24,3 +33,7 @@ import pool from "./db/connection.js";
     console.error("Database Connection Failed:", error);
   }
 })();
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
+});
