@@ -2,7 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { GoogleLogin }
+from "@react-oauth/google";
+
 function Register() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -31,7 +36,7 @@ function Register() {
       alert("Account created!  Redirecting to login page...");
 
       // Redirect to login page
-      window.location.href = "/login";
+      navigate("/login");
 
     } catch (error) {
       if (error.response && error.response.status === 409) {
@@ -51,38 +56,76 @@ function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
-      <input
-        name="first_name"
-        placeholder="First Name"
-        onChange={handleChange}
-      />
+    <div>
+      <form onSubmit={handleSubmit} autoComplete="off">
+        <input
+          name="first_name"
+          placeholder="First Name"
+          onChange={handleChange}
+        />
 
-      <input
-        name="last_name"
-        placeholder="Last Name"
-        onChange={handleChange}
-      />
+        <input
+          name="last_name"
+          placeholder="Last Name"
+          onChange={handleChange}
+        />
 
-      <input
-        name="email"
-        placeholder="Email"
-        autoComplete="new-email"
-        onChange={handleChange}
-      />
+        <input
+          name="email"
+          placeholder="Email"
+          autoComplete="new-email"
+          onChange={handleChange}
+        />
 
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        autoComplete="new-password"
-        onChange={handleChange}
-      />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          autoComplete="new-password"
+          onChange={handleChange}
+        />
 
-      <button type="submit">
-        Register
-      </button>
-    </form>
+        <button type="submit">
+          Register
+        </button>
+      </form>
+
+      <GoogleLogin
+        onSuccess={async (
+            credentialResponse
+        ) => {
+
+            try {
+
+            const response =
+                await axios.post(
+                "http://localhost:5000/api/auth/google",
+                {
+                    credential:
+                    credentialResponse.credential
+                }
+                );
+
+            localStorage.setItem(
+                "token",
+                response.data.token
+            );
+
+            navigate("/dashboard");
+
+            } catch (error) {
+
+            console.error(error);
+
+            }
+        }}
+
+        onError={() => {
+            console.log("Registration Failed");
+        }}
+        />
+    </div>
+
   );
 }
 

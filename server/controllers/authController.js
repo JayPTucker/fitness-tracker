@@ -2,6 +2,109 @@ import bcrypt from "bcrypt";
 import pool from "../db/connection.js";
 import jwt from "jsonwebtoken";
 
+import { OAuth2Client } from "google-auth-library";
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleLogin = async (req, res) => {
+  try {
+
+    const { credential } = req.body;
+
+    const ticket =
+      await googleClient.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+    const payload =
+      ticket.getPayload();
+
+    const {
+      sub,
+      email,
+      given_name,
+      family_name
+    } = payload;
+
+    const [users] =
+      await pool.execute(
+        `
+        SELECT *
+        FROM users
+        WHERE email = ?
+        `,
+        [email]
+      );
+
+    let user;
+
+    if (users.length === 0) {
+
+      await pool.execute(
+        `
+        INSERT INTO users
+        (
+          first_name,
+          last_name,
+          email,
+          password
+        )
+        VALUES (?, ?, ?, ?)
+        `,
+        [
+          given_name,
+          family_name || "",
+          email,
+          ""
+        ]
+      );
+
+      const [newUser] =
+        await pool.execute(
+          `
+          SELECT *
+          FROM users
+          WHERE email = ?
+          `,
+          [email]
+        );
+
+      user = newUser[0];
+
+    } else {
+
+      user = users[0];
+
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        first_name: user.first_name,
+        email: user.email
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d"
+      }
+    );
+
+    res.json({
+      token
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: "Google login failed"
+    });
+
+  }
+};
+
 export const registerUser = async (req, res) => {
   try {
     const {

@@ -4,12 +4,15 @@ import {
   registerUser,
   loginUser,
   getCurrentUser,
-  checkEmailExists
+  checkEmailExists,
+  googleLogin
 } from "../controllers/authController.js";
 
 import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
+
+router.post("/google", googleLogin);
 
 router.post("/register", registerUser);
 
