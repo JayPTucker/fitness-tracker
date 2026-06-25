@@ -11,6 +11,25 @@ export const registerUser = async (req, res) => {
       password,
     } = req.body;
 
+
+    // Email check protection + SQL has it's own protection against dupe emails
+    const [existingUsers] =
+      await pool.execute(
+        `
+        SELECT id
+        FROM users
+        WHERE email = ?
+        `,
+        [email]
+      );
+
+    if (existingUsers.length > 0) {
+      // console.log("Email already exists. Please use a different email.");
+      return res.status(409).json({
+        message: "Email already exists"
+      });
+    }
+
     const hashedPassword =
       await bcrypt.hash(password, 10);
 
@@ -134,5 +153,29 @@ export const getCurrentUser = async (req, res) => {
     res.status(500).json({
       message: "Failed to fetch user"
     });
+  }
+};
+
+export const checkEmailExists = async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const [users] = await pool.execute(
+      `
+      SELECT *
+      FROM users
+      WHERE email = ?
+      `,
+      [email]
+    );
+
+    if (users.length > 0) {
+      res.json({ exists: true });
+    } else {
+      res.json({ exists: false });
+    }
+  } catch (error) {
+    console.error("Error checking email:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
