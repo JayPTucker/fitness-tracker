@@ -8,6 +8,9 @@ from "@react-oauth/google";
 function Register() {
   const navigate = useNavigate();
 
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/;
+
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -25,6 +28,14 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!passwordRegex.test(formData.password)) {
+
+      alert(
+        "Password must be 8-64 characters and contain an uppercase letter, lowercase letter, and number."
+      );
+
+      return;
+    }
     // Check to see if Email is already registered in database
     try {
       
@@ -55,6 +66,7 @@ function Register() {
 
   };
 
+
   return (
     <div>
       <form onSubmit={handleSubmit} autoComplete="off">
@@ -82,6 +94,8 @@ function Register() {
           type="password"
           placeholder="Password"
           autoComplete="new-password"
+          minLength={8}
+          maxLength={64}
           onChange={handleChange}
         />
 

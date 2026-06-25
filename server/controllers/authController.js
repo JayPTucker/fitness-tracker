@@ -114,6 +114,16 @@ export const registerUser = async (req, res) => {
       password,
     } = req.body;
 
+    if (
+      !password ||
+      password.length < 8 ||
+      password.length > 64
+    ) {
+      return res.status(400).json({
+        message:
+          "Password must be between 8 and 64 characters."
+      });
+    }
 
     // Email check protection + SQL has it's own protection against dupe emails
     const [existingUsers] =
