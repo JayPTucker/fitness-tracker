@@ -245,7 +245,8 @@ export const getCurrentUser = async (req, res) => {
         first_name,
         last_name,
         email,
-        created_at
+        created_at,
+        profile_completed
       FROM users
       WHERE id = ?
       `,

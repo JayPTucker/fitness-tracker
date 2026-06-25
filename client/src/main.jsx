@@ -13,6 +13,7 @@ import Home from './pages/home';
 import Register from './pages/register';
 import Login from './pages/login';
 import Dashboard from './pages/Dashboard';
+import Setup from './pages/Setup';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/setup" element={<Setup />} />
       </Routes>
     </BrowserRouter>
   </GoogleOAuthProvider>
