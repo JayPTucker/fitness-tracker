@@ -48,6 +48,9 @@ function Dashboard() {
 
   return (
     <div>
+      <button onClick={() => navigate("/setup")}>
+        Edit Profile
+      </button>
       <h1>
         Welcome back,
         {" "}
