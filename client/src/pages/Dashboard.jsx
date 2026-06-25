@@ -5,8 +5,12 @@ import axios from "axios";
 function Dashboard() {
   const navigate = useNavigate();
 
+  // For GET on user table on Dashboard
   const [user, setUser] = useState(null);
+  // For GET on user_profiles on Dashboard
+  const [profile, setProfile] = useState(null);
 
+  // GET on user table on Dashboard
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -26,6 +30,19 @@ function Dashboard() {
 
         setUser(response.data);
 
+        // GET profile for Dashboard user_profiles
+        const profileResponse =
+          await axios.get(
+            "http://localhost:5000/api/profile",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
+
+        setProfile(profileResponse.data);
+
         if (
           !response.data.profile_completed
         ) {
@@ -42,7 +59,7 @@ function Dashboard() {
     fetchUser();
   }, [navigate]);
 
-  if (!user) {
+  if (!user || !profile) {
     return <p>Loading...</p>;
   }
 
@@ -57,7 +74,16 @@ function Dashboard() {
         {user.first_name}
       </h1>
 
-      <p>Dashboard coming soon.</p>
+      
+      <p>Weight: {profile.weight_lbs} lbs</p>
+
+      <p>Goal: {profile.goal}</p>
+
+      <p>Equipment: {profile.equipment_type}</p>
+
+      <p>Experience: {profile.experience_level}</p>
+
+      <p>Workout Days: {profile.workout_days_per_week}</p>
     </div>
   );
 }

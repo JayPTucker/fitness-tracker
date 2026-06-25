@@ -117,3 +117,35 @@ export const createProfile = async (req, res) => {
 
   }
 };
+
+// Getting Profile for displaying data from DB on page via /Dashboard
+export const getProfile = async (req, res) => {
+  try {
+
+    const [profiles] = await pool.execute(
+      `
+      SELECT *
+      FROM user_profiles
+      WHERE user_id = ?
+      `,
+      [req.user.id]
+    );
+
+    if (profiles.length === 0) {
+      return res.status(404).json({
+        message: "Profile not found"
+      });
+    }
+
+    res.json(profiles[0]);
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to fetch profile"
+    });
+
+  }
+};
