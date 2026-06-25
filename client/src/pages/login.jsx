@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axious from "axios";
 
+import { GoogleLogin }
+from "@react-oauth/google";
+
 function Login() {
     const navigate = useNavigate();
 
@@ -37,25 +40,37 @@ function Login() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                onChange={handleChange}
-            />
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    onChange={handleChange}
+                />
 
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={handleChange}
-            />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                />
 
-            <button type="submit">
-                Login
-            </button>
-        </form> 
+                <button type="submit">
+                    Login
+                </button>
+            </form> 
+
+            <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                    console.log(credentialResponse);
+                }}
+
+                onError={() => {
+                    console.log("Login Failed");
+                }}
+            />
+        </div>
     )
 }
 
