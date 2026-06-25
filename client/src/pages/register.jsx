@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Register() {
@@ -26,6 +27,10 @@ function Register() {
       );
 
       alert("Account created!");
+
+      // Redirect to login page
+      window.location.href = "/login";
+
     } catch (error) {
       console.error(error);
     }
