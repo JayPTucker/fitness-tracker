@@ -2,11 +2,7 @@ import pool from "../db/connection.js";
 
 export const createProfile = async (req, res) => {
 
-    
-
   try {
-
-
 
     const {
       gender,
