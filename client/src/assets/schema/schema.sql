@@ -45,24 +45,42 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE workouts (
+CREATE TABLE exercises (
     id INT AUTO_INCREMENT PRIMARY KEY,
 
-    user_id INT NOT NULL,
+    exercise_name VARCHAR(100) NOT NULL,
 
-    workout_name VARCHAR(100),
+    muscle_group VARCHAR(50) NOT NULL,
 
-    workout_date DATE,
+    secondary_muscle VARCHAR(50),
 
-    duration_minutes INT,
+    equipment ENUM(
+    'Barbell',
+    'Dumbbells',
+    'Machine',
+    'Cable',
+    'Smith Machine',
+    'Bodyweight',
+    'Resistance Bands',
+    'Kettlebell'
+	)  NOT NULL,
 
-    notes TEXT,
+    difficulty ENUM(
+        'Beginner',
+        'Intermediate',
+        'Advanced'
+    ) NOT NULL,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    exercise_type ENUM(
+        'Compound',
+        'Isolation'
+    ) NOT NULL,
 
-    FOREIGN KEY (user_id)
-    REFERENCES users(id)
-    ON DELETE CASCADE
+    instructions TEXT,
+
+    is_active BOOLEAN DEFAULT TRUE,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE exercise_logs (

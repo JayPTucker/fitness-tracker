@@ -14,45 +14,39 @@ function Dashboard() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token =
-          localStorage.getItem("token");
+        const token = localStorage.getItem("token");
 
-        const response =
-          await axios.get(
-            "http://localhost:5000/api/auth/me",
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`
-              }
-            }
-          );
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
 
-        setUser(response.data);
+        const [userResponse, profileResponse] =
+          await Promise.all([
+            axios.get(
+              "http://localhost:5000/api/auth/me",
+              config
+            ),
+            axios.get(
+              "http://localhost:5000/api/profile",
+              config
+            )
+          ]);
 
-        // GET profile for Dashboard user_profiles
-        const profileResponse =
-          await axios.get(
-            "http://localhost:5000/api/profile",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            }
-          );
-
+        setUser(userResponse.data);
         setProfile(profileResponse.data);
 
-        if (
-          !response.data.profile_completed
-        ) {
+        if (!userResponse.data.profile_completed) {
           navigate("/setup");
         }
 
       } catch (error) {
+
         console.error(error);
 
         navigate("/login");
+
       }
     };
 
@@ -64,14 +58,13 @@ function Dashboard() {
   }
 
   return (
-    <div>
+    <div className="container">
+
       <button onClick={() => navigate("/setup")}>
         Edit Profile
       </button>
       <h1>
-        Welcome back,
-        {" "}
-        {user.first_name}
+        Welcome back, {user.first_name}
       </h1>
 
       
@@ -84,7 +77,19 @@ function Dashboard() {
       <p>Experience: {profile.experience_level}</p>
 
       <p>Workout Days: {profile.workout_days_per_week}</p>
+      
+      <hr></hr>
+
+      <section>
+        <p>Today's Workout:</p>
+        
+        <button>
+          Start Workout
+        </button>
+      </section>
     </div>
+
+    
   );
 }
 

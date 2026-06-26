@@ -1,0 +1,47 @@
+[
+  {
+    "exercise_name": "Barbell Bench Press",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Triceps",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Press the barbell from chest level until arms are fully extended."
+  },
+  {
+    "exercise_name": "Incline Dumbbell Press",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Shoulders",
+    "equipment": "Dumbbells",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Press dumbbells upward while lying on an incline bench."
+  },
+  {
+    "exercise_name": "Push Up",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Triceps",
+    "equipment": "Bodyweight",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Lower your chest toward the floor and push back up."
+  },
+  {
+    "exercise_name": "Lat Pulldown",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Pull the bar toward your upper chest."
+  },
+  {
+    "exercise_name": "Barbell Squat",
+    "muscle_group": "Legs",
+    "secondary_muscle": "Glutes",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Lower until thighs are parallel before standing."
+  }
+]
