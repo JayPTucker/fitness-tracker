@@ -102,3 +102,91 @@ CREATE TABLE exercise_logs (
     REFERENCES workouts(id)
     ON DELETE CASCADE
 );
+
+CREATE TABLE workout_plans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT NOT NULL,
+
+    plan_name VARCHAR(100),
+
+    goal VARCHAR(50),
+
+    days_per_week INT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE workout_plan_exercises (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    workout_plan_id INT NOT NULL,
+
+    workout_day INT NOT NULL,
+
+    exercise_id INT NOT NULL,
+
+    exercise_order INT NOT NULL,
+
+    sets INT,
+
+    reps VARCHAR(25),
+
+    FOREIGN KEY (workout_plan_id)
+        REFERENCES workout_plans(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (exercise_id)
+        REFERENCES exercises(id)
+);
+
+CREATE TABLE workout_sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT NOT NULL,
+
+    workout_plan_id INT NOT NULL,
+
+    workout_day INT NOT NULL,
+
+    started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    completed_at DATETIME,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (workout_plan_id)
+        REFERENCES workout_plans(id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE exercise_sets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    workout_session_id INT NOT NULL,
+
+    exercise_id INT NOT NULL,
+
+    set_number INT NOT NULL,
+
+    reps_completed INT,
+
+    weight_used DECIMAL(6,2),
+
+    completed BOOLEAN DEFAULT FALSE,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (workout_session_id)
+        REFERENCES workout_sessions(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (exercise_id)
+        REFERENCES exercises(id)
+);
