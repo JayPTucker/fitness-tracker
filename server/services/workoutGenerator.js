@@ -1,22 +1,39 @@
-import pool from "../db/connection.js";
-
 const workoutTemplates = {
-  Push: {
-    primary: ["Chest", "Shoulders", "Triceps"]
-  },
 
-  exerciseCounts: {
-    Chest: 3,
-    Shoulders: 2,
-    Triceps: 2
+  Push: {
+    primary: [
+      "Chest",
+      "Shoulders",
+      "Triceps"
+    ],
+
+    exerciseCounts: {
+      Chest: 3,
+      Shoulders: 2,
+      Triceps: 2
+    }
   },
 
   Pull: {
-    primary: ["Back", "Biceps"]
+    primary: [
+      "Back",
+      "Biceps"
+    ],
+
+    exerciseCounts: {
+      Back: 3,
+      Biceps: 2
+    }
   },
 
   Legs: {
-    primary: ["Legs"]
+    primary: [
+      "Legs"
+    ],
+
+    exerciseCounts: {
+      Legs: 5
+    }
   },
 
   Upper: {
@@ -26,11 +43,25 @@ const workoutTemplates = {
       "Shoulders",
       "Biceps",
       "Triceps"
-    ]
+    ],
+
+    exerciseCounts: {
+      Chest: 2,
+      Back: 2,
+      Shoulders: 1,
+      Biceps: 1,
+      Triceps: 1
+    }
   },
 
   Lower: {
-    primary: ["Legs"]
+    primary: [
+      "Legs"
+    ],
+
+    exerciseCounts: {
+      Legs: 6
+    }
   },
 
   "Full Body": {
@@ -39,8 +70,16 @@ const workoutTemplates = {
       "Back",
       "Legs",
       "Shoulders"
-    ]
+    ],
+
+    exerciseCounts: {
+      Chest: 2,
+      Back: 2,
+      Legs: 2,
+      Shoulders: 1
+    }
   }
+
 };
 
 export async function generateWorkout(profile) {
@@ -74,38 +113,16 @@ export async function generateWorkout(profile) {
   // LOOP THROUGH EACH DAY
   for (const day of split) {
 
-    console.log(day)
+    const muscles =
+      workoutTemplates[day].primary;
 
+    const exerciseCounts =
+      workoutTemplates[day].exerciseCounts;
 
-    // Which muscles does this day target?
-    const muscles = workoutTemplates[day].primary;
-
-    // Build SQL placeholders (?, ?, ?)
-    // const placeholders =
-    //   muscles.map(() => "?").join(",");
-
-    // Query matching exercises
-    // const [exercises] = await pool.execute(
-    //   `
-    //   SELECT *
-    //   FROM exercises
-    //   WHERE
-    //     muscle_group IN (${placeholders})
-    //     AND equipment = ?
-    //     AND difficulty = ?
-    //     AND is_active = TRUE
-    //   `,
-    //   [
-    //     ...muscles,
-    //     profile.equipment_type,
-    //     profile.experience_level
-    //   ]
-    // );
-
-    // // Save this day's workout
     workouts.push({
       day,
-      exercises
+      muscles,
+      exerciseCounts
     });
 
   }
@@ -115,3 +132,5 @@ export async function generateWorkout(profile) {
     workouts
   };
 }
+
+// node scripts/testGenerator.js
