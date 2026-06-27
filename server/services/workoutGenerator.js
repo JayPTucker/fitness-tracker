@@ -82,9 +82,80 @@ const workoutTemplates = {
 
 };
 
+const allowedEquipment = equipmentMap[profile.equipment_type];
+  
+const placeholders = allowedEquipment.map(() => "?").join(",");
+
+
+async function getExercisesForMuscle(
+  muscle,
+  count,
+  profile
+) {
+
+  const allowedEquipment =
+    equipmentMap[profile.equipment_type];
+
+  const equipmentPlaceholders =
+    allowedEquipment
+      .map(() => "?")
+      .join(",");
+
+  const [exercises] =
+    await pool.execute(
+      `
+      SELECT *
+      FROM exercises
+      WHERE
+        muscle_group = ?
+        AND equipment IN (${equipmentPlaceholders})
+        AND difficulty = ?
+        AND is_active = TRUE
+      ORDER BY RAND()
+      LIMIT ?
+      `,
+      [
+        muscle,
+        ...allowedEquipment,
+        profile.experience_level,
+        count
+      ]
+    );
+
+  return exercises;
+
+}
+
 export async function generateWorkout(profile) {
 
   let split = [];
+
+  const equipmentMap = {
+
+    "Commercial Gym": [
+      "Barbell",
+      "Dumbbells",
+      "Machine",
+      "Cable",
+      "Smith Machine",
+      "Resistance Bands",
+      "Kettlebell",
+      "Bodyweight"
+    ],
+
+    "Home Gym": [
+      "Barbell",
+      "Dumbbells",
+      "Resistance Bands",
+      "Kettlebell",
+      "Bodyweight"
+    ],
+
+    "Bodyweight Only": [
+      "Bodyweight"
+    ]
+
+  };
 
   switch (profile.workout_days_per_week) {
 
@@ -119,18 +190,36 @@ export async function generateWorkout(profile) {
     const exerciseCounts =
       workoutTemplates[day].exerciseCounts;
 
+    // Empty workout for this day
+    const workoutExercises = [];
+
+    // Loop through each muscle
+    for (const muscle in exerciseCounts) {
+
+      const count = exerciseCounts[muscle];
+
+      const exercises =
+        await getExercisesForMuscle(
+          muscle,
+          count,
+          profile
+        );
+
+      workoutExercises.push(...exercises);
+
+    }
+
+    // Save the completed day
     workouts.push({
       day,
-      muscles,
-      exerciseCounts
+      exercises: workoutExercises
     });
 
   }
-
   return {
     split,
     workouts
   };
-}
+};
 
 // node scripts/testGenerator.js
