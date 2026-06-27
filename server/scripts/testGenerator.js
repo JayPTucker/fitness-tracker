@@ -1,11 +1,9 @@
-import { generateWorkout }
-from "../services/workoutGenerator.js";
+import { generateWorkout } from "../services/workoutGenerator.js";
 
-const split =
-    await generateWorkout({
+const profile = {
+  workout_days_per_week: 5
+};
 
-        workout_days_per_week: 5
+const result = await generateWorkout(profile);
 
-    });
-
-console.log(split);
+console.log(JSON.stringify(result, null, 2));
