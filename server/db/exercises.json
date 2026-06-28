@@ -43,5 +43,326 @@
     "difficulty": "Intermediate",
     "exercise_type": "Compound",
     "instructions": "Lower until thighs are parallel before standing."
+  },
+  {
+    "exercise_name": "Incline Barbell Bench Press",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Shoulders",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Press the bar upward from an incline bench until your arms are fully extended."
+  },
+  {
+    "exercise_name": "Decline Barbell Bench Press",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Triceps",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Press the barbell upward while lying on a decline bench."
+  },
+  {
+    "exercise_name": "Flat Dumbbell Bench Press",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Triceps",
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Press both dumbbells upward while lying flat on a bench."
+  },
+  {
+    "exercise_name": "Cable Chest Fly",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Shoulders",
+    "equipment": "Cable",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Bring the cable handles together in front of your chest."
+  },
+  {
+    "exercise_name": "Pec Deck Fly",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Shoulders",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Bring the machine arms together while squeezing your chest."
+  },
+  {
+    "exercise_name": "Chest Dips",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Triceps",
+    "equipment": "Bodyweight",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Lean forward while dipping to emphasize the chest."
+  },
+  {
+    "exercise_name": "Machine Chest Press",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Triceps",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Press the machine handles forward until your arms are extended."
+  },
+
+  {
+    "exercise_name": "Barbell Bent Over Row",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Pull the barbell toward your lower chest while keeping your back flat."
+  },
+  {
+    "exercise_name": "Single Arm Dumbbell Row",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Pull the dumbbell toward your hip while keeping your torso stable."
+  },
+  {
+    "exercise_name": "Seated Cable Row",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Cable",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Pull the cable handle toward your torso while squeezing your shoulder blades."
+  },
+  {
+    "exercise_name": "T-Bar Row",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Machine",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Pull the handles toward your chest while maintaining a neutral spine."
+  },
+  {
+    "exercise_name": "Pull Up",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Bodyweight",
+    "difficulty": "Advanced",
+    "exercise_type": "Compound",
+    "instructions": "Pull yourself until your chin clears the bar before lowering under control."
+  },
+  {
+    "exercise_name": "Chin Up",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Bodyweight",
+    "difficulty": "Advanced",
+    "exercise_type": "Compound",
+    "instructions": "Use an underhand grip and pull until your chin passes the bar."
+  },
+
+  {
+    "exercise_name": "Standing Barbell Overhead Press",
+    "muscle_group": "Shoulders",
+    "secondary_muscle": "Triceps",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Press the bar overhead until your elbows are locked out."
+  },
+  {
+    "exercise_name": "Seated Dumbbell Shoulder Press",
+    "muscle_group": "Shoulders",
+    "secondary_muscle": "Triceps",
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Press the dumbbells overhead while seated."
+  },
+  {
+    "exercise_name": "Dumbbell Lateral Raise",
+    "muscle_group": "Shoulders",
+    "secondary_muscle": "None",
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Raise the dumbbells to shoulder height with a slight bend in the elbows."
+  },
+  {
+    "exercise_name": "Cable Lateral Raise",
+    "muscle_group": "Shoulders",
+    "secondary_muscle": "None",
+    "equipment": "Cable",
+    "difficulty": "Intermediate",
+    "exercise_type": "Isolation",
+    "instructions": "Raise the cable handle to shoulder height while keeping your arm slightly bent."
+  },
+  {
+    "exercise_name": "Rear Delt Fly",
+    "muscle_group": "Shoulders",
+    "secondary_muscle": "Back",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Pull the handles apart to target the rear deltoids."
+  },
+
+  {
+    "exercise_name": "Barbell Curl",
+    "muscle_group": "Biceps",
+    "secondary_muscle": "Forearms",
+    "equipment": "Barbell",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Curl the barbell upward while keeping your elbows tucked."
+  },
+  {
+    "exercise_name": "Alternating Dumbbell Curl",
+    "muscle_group": "Biceps",
+    "secondary_muscle": "Forearms",
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Curl one dumbbell at a time while keeping your upper arm stationary."
+  },
+  {
+    "exercise_name": "Hammer Curl",
+    "muscle_group": "Biceps",
+    "secondary_muscle": "Forearms",
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Curl the dumbbells with a neutral grip."
+  },
+  {
+    "exercise_name": "Cable Curl",
+    "muscle_group": "Biceps",
+    "secondary_muscle": "Forearms",
+    "equipment": "Cable",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Curl the cable attachment while squeezing the biceps."
+  },
+
+  {
+    "exercise_name": "Close Grip Bench Press",
+    "muscle_group": "Triceps",
+    "secondary_muscle": "Chest",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Press the bar with a narrow grip to emphasize the triceps."
+  },
+  {
+    "exercise_name": "Tricep Pushdown",
+    "muscle_group": "Triceps",
+    "secondary_muscle": "None",
+    "equipment": "Cable",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Push the cable attachment downward until your elbows are fully extended."
+  },
+  {
+    "exercise_name": "Overhead Rope Extension",
+    "muscle_group": "Triceps",
+    "secondary_muscle": "None",
+    "equipment": "Cable",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Extend the rope overhead while keeping your elbows fixed."
+  },
+  {
+    "exercise_name": "Skull Crusher",
+    "muscle_group": "Triceps",
+    "secondary_muscle": "None",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Isolation",
+    "instructions": "Lower the bar toward your forehead before extending your elbows."
+  },
+
+  {
+    "exercise_name": "Romanian Deadlift",
+    "muscle_group": "Legs",
+    "secondary_muscle": "Glutes",
+    "equipment": "Barbell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Hinge at the hips while lowering the bar down your legs."
+  },
+  {
+    "exercise_name": "Leg Press",
+    "muscle_group": "Legs",
+    "secondary_muscle": "Glutes",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Press the platform away until your legs are nearly straight."
+  },
+  {
+    "exercise_name": "Walking Lunge",
+    "muscle_group": "Legs",
+    "secondary_muscle": "Glutes",
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Step forward into each lunge while maintaining balance."
+  },
+  {
+    "exercise_name": "Leg Extension",
+    "muscle_group": "Legs",
+    "secondary_muscle": "None",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Extend your knees until your legs are straight."
+  },
+  {
+    "exercise_name": "Lying Leg Curl",
+    "muscle_group": "Legs",
+    "secondary_muscle": "None",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Curl the pad toward your glutes while keeping your hips down."
+  },
+  {
+    "exercise_name": "Standing Calf Raise",
+    "muscle_group": "Legs",
+    "secondary_muscle": "None",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Raise your heels as high as possible before lowering slowly."
+  },
+
+  {
+    "exercise_name": "Plank",
+    "muscle_group": "Core",
+    "secondary_muscle": "Shoulders",
+    "equipment": "Bodyweight",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Hold a straight body position while bracing your core."
+  },
+  {
+    "exercise_name": "Hanging Leg Raise",
+    "muscle_group": "Core",
+    "secondary_muscle": "Hip Flexors",
+    "equipment": "Bodyweight",
+    "difficulty": "Intermediate",
+    "exercise_type": "Isolation",
+    "instructions": "Raise your legs until they are parallel to the floor."
+  },
+  {
+    "exercise_name": "Cable Crunch",
+    "muscle_group": "Core",
+    "secondary_muscle": "None",
+    "equipment": "Cable",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Crunch downward while keeping your hips stationary."
   }
 ]

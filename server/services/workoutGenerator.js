@@ -1,3 +1,5 @@
+import pool from "../db/connection.js"
+
 const workoutTemplates = {
 
   Push: {
@@ -82,57 +84,9 @@ const workoutTemplates = {
 
 };
 
-const allowedEquipment = equipmentMap[profile.equipment_type];
-  
-const placeholders = allowedEquipment.map(() => "?").join(",");
+const equipmentMap = {
 
-
-async function getExercisesForMuscle(
-  muscle,
-  count,
-  profile
-) {
-
-  const allowedEquipment =
-    equipmentMap[profile.equipment_type];
-
-  const equipmentPlaceholders =
-    allowedEquipment
-      .map(() => "?")
-      .join(",");
-
-  const [exercises] =
-    await pool.execute(
-      `
-      SELECT *
-      FROM exercises
-      WHERE
-        muscle_group = ?
-        AND equipment IN (${equipmentPlaceholders})
-        AND difficulty = ?
-        AND is_active = TRUE
-      ORDER BY RAND()
-      LIMIT ?
-      `,
-      [
-        muscle,
-        ...allowedEquipment,
-        profile.experience_level,
-        count
-      ]
-    );
-
-  return exercises;
-
-}
-
-export async function generateWorkout(profile) {
-
-  let split = [];
-
-  const equipmentMap = {
-
-    "Commercial Gym": [
+    "Full Gym": [
       "Barbell",
       "Dumbbells",
       "Machine",
@@ -156,6 +110,59 @@ export async function generateWorkout(profile) {
     ]
 
   };
+
+
+async function getExercisesForMuscle(
+  muscle,
+  count,
+  profile
+) {
+
+  // console.log(profile.equipment_type);
+  // console.log(equipmentMap);
+
+  const allowedEquipment =
+    equipmentMap[profile.equipment_type];
+
+  if (!allowedEquipment) {
+    throw new Error(
+      `Unknown equipment type: ${profile.equipment_type}`
+    );
+  }
+
+  const equipmentPlaceholders =
+    allowedEquipment
+      .map(() => "?")
+      .join(",");
+
+
+  const [exercises] =
+    await pool.execute(
+      `
+      SELECT *
+      FROM exercises
+      WHERE
+        muscle_group = ?
+        AND equipment IN (${equipmentPlaceholders})
+        AND difficulty = ?
+        AND is_active = TRUE
+      ORDER BY RAND()
+      LIMIT ${Number(count)}
+      `,
+      [
+        muscle,
+        ...allowedEquipment,
+        profile.experience_level
+      ]
+    );
+
+  return exercises;
+
+}
+
+export async function generateWorkout(profile) {
+
+  let split = [];
 
   switch (profile.workout_days_per_week) {
 
