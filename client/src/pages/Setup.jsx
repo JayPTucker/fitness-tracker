@@ -7,8 +7,6 @@ function Setup() {
 
     const navigate = useNavigate();
 
-    
-
     const[formData, setFormData] = useState({
         gender: '',
         date_of_birth: '',

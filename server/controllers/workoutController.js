@@ -129,32 +129,38 @@ export const getCurrentWorkoutPlan = async (req, res) => {
     const plan = plans[0];
 
     // Fetch every exercise for that plan
+    const workoutDay = 1; // Temporary. It'll be dynamic later
+
     const [exercises] = await pool.execute(
-        `
-        SELECT
-            wpe.*,
-            e.exercise_name,
-            e.instructions,
-            e.muscle_group,
-            e.secondary_muscle,
-            e.exercise_type,
-            e.equipment
-        FROM workout_plan_exercises wpe
+    `
+    SELECT
+        wpe.*,
+        e.exercise_name,
+        e.instructions,
+        e.muscle_group,
+        e.secondary_muscle,
+        e.exercise_type,
+        e.equipment
+    FROM workout_plan_exercises wpe
 
-        JOIN exercises e
-            ON wpe.exercise_id = e.id
+    JOIN exercises e
+        ON wpe.exercise_id = e.id
 
-        WHERE workout_plan_id = ?
+    WHERE
+        workout_plan_id = ?
+        AND workout_day = ?
 
-        ORDER BY
-            workout_day,
-            exercise_order
-        `,
-        [plan.id]
+    ORDER BY exercise_order
+    `,
+    [
+        plan.id,
+        workoutDay
+    ]
     );
 
     res.json({
         plan,
+        workoutDay,
         exercises
     });
 
@@ -207,4 +213,107 @@ export const startWorkoutSession = async (req, res) => {
     });
 
   }
+};
+
+export const logSet = async (req, res) => {
+  try {
+
+    const {
+      workout_session_id,
+      exercise_id,
+      set_number,
+      reps_completed,
+      weight_used
+    } = req.body;
+
+    await pool.execute(
+      `
+      INSERT INTO exercise_sets
+      (
+        workout_session_id,
+        exercise_id,
+        set_number,
+        reps_completed,
+        weight_used,
+        completed
+      )
+      VALUES (?, ?, ?, ?, ?, ?)
+      `,
+      [
+        workout_session_id,
+        exercise_id,
+        set_number,
+        reps_completed,
+        weight_used,
+        true
+      ]
+    );
+
+    res.status(201).json({
+      message: "Set logged successfully."
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to log set."
+    });
+
+  }
+};
+
+export const finishWorkoutSession = async (req, res) => {
+
+  try {
+
+    const { workout_session_id } = req.body;
+
+    // Calculate total workout volume
+    const [volume] = await pool.execute(
+      `
+      SELECT
+        SUM(weight_used * reps_completed) AS totalVolume
+      FROM exercise_sets
+      WHERE workout_session_id = ?
+      `,
+      [workout_session_id]
+    );
+
+    // Finish workout
+    await pool.execute(
+      `
+      UPDATE workout_sessions
+      SET
+        completed_at = NOW(),
+        duration_seconds =
+          TIMESTAMPDIFF(
+            SECOND,
+            started_at,
+            NOW()
+          ),
+        total_volume = ?
+      WHERE id = ?
+      `,
+      [
+        volume[0].totalVolume || 0,
+        workout_session_id
+      ]
+    );
+
+    res.json({
+      message: "Workout completed!"
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to finish workout."
+    });
+
+  }
+
 };

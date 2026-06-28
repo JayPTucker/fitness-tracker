@@ -81,10 +81,8 @@ function Dashboard() {
       <hr></hr>
 
       <section>
-        <p>Today's Workout:</p>
-        
-        <button>
-          Start Workout
+        <button onClick={() => navigate("/workout")}>
+            Start Today's Workout
         </button>
       </section>
     </div>
