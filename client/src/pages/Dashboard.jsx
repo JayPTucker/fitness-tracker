@@ -100,7 +100,7 @@ function Dashboard() {
 
       <p>Workout Days: {profile.workout_days_per_week}</p>
       
-      <hr></hr>
+      <hr />
 
       <section>
         <button onClick={() => navigate("/workout")}>
@@ -110,11 +110,42 @@ function Dashboard() {
 
       <hr />
 
-      <h2>Last Workout</h2>
+
 
       {
         lastWorkout ? (
           <>
+
+            <h2>
+              Most Recent Workout - {" "}
+              {new Date(lastWorkout.started_at).toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric"
+              })}
+            </h2>
+
+            <b>
+              Workout Time: 
+              {" "}
+              {new Date(lastWorkout.started_at).toLocaleTimeString(
+                  "en-US",
+                  {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true
+                  }
+              )}
+              {" - "}
+              {new Date(lastWorkout.completed_at).toLocaleTimeString(
+                  "en-US",
+                  {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true
+                  }
+              )}                
+            </b>
 
             <p>
               Plan:
@@ -155,7 +186,7 @@ function Dashboard() {
           navigate("/history")
         }
       >
-        Workout History
+      Full Workout History
     </button>
     </div>
 

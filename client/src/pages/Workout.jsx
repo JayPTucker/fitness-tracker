@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import "../css/Workout.css";
+
 function Workout() {
 
   const [plan, setPlan] = useState(null);
   const [exercises, setExercises] = useState([]);
   const [setData, setSetData] = useState({});
+  const [completedSets, setCompletedSets] = useState({});
   const [seconds, setSeconds] = useState(0);
   const [workoutDay, setWorkoutDay] = useState(null);
   const [sessionId, setSessionId] = useState(null);
@@ -88,7 +91,10 @@ function Workout() {
   }
 
 
-    const handleCompleteSet = async (exercise) => {
+  const handleCompleteSet = async (
+    exercise,
+    setNumber
+  ) => {
 
     try {
 
@@ -100,9 +106,9 @@ function Workout() {
             {
                 workout_session_id: sessionId, // We'll make this dynamic next
                 exercise_id: exercise.exercise_id,
-                set_number: 1,
-                reps_completed: setData[exercise.id]?.reps,
-                weight_used: setData[exercise.id]?.weight
+                set_number: setNumber,
+                reps_completed: setData[`${exercise.id}-${setNumber - 1}`]?.reps,
+                weight_used: setData[`${exercise.id}-${setNumber - 1}`]?.weight
             },
             {
                 headers: {
@@ -221,47 +227,89 @@ function Workout() {
             {exercise.instructions}
           </p>
 
-            <input
-                type="number"
-                placeholder="Weight"
-                value={setData[exercise.id]?.weight || ""}
-                onChange={(e) =>
+          {Array.from(
+            { length: exercise.sets },
+            (_, index) => (
+
+              <div
+                key={index}
+                className={`setRow ${
+                  completedSets[`${exercise.id}-${index}`]
+                    ? "completedSet"
+                    : ""
+                }`}
+              >
+
+                <strong>
+                  Set {index + 1}
+                </strong>
+
+                <input
+                  type="number"
+                  placeholder="Weight"
+                  value={
+                    setData[`${exercise.id}-${index}`]?.weight || ""
+                  }
+                  onChange={(e) =>
                     setSetData({
-                    ...setData,
-                    [exercise.id]: {
-                        ...setData[exercise.id],
+                      ...setData,
+                      [`${exercise.id}-${index}`]: {
+                        ...setData[`${exercise.id}-${index}`],
                         weight: e.target.value
-                    }
+                      }
                     })
-                }
-            />
+                  }
+                />
 
-          <br />
-            <input
-                type="number"
-                placeholder="Reps"
-                value={setData[exercise.id]?.reps || ""}
-                onChange={(e) =>
+                <input
+                  type="number"
+                  placeholder="Reps"
+                  value={
+                    setData[`${exercise.id}-${index}`]?.reps || ""
+                  }
+                  onChange={(e) =>
                     setSetData({
-                    ...setData,
-                    [exercise.id]: {
-                        ...setData[exercise.id],
+                      ...setData,
+                      [`${exercise.id}-${index}`]: {
+                        ...setData[`${exercise.id}-${index}`],
                         reps: e.target.value
-                    }
+                      }
                     })
-                }
-            />
+                  }
+                />
 
-          <br />
-          <br />
+                <button
+                  disabled={
+                    completedSets[
+                      `${exercise.id}-${index}`
+                    ]
+                  }
+                  onClick={async () => {
 
-            <button
-            onClick={() =>
-                handleCompleteSet(exercise)
-            }
-            >
-            Complete Set
-            </button>
+                    await handleCompleteSet(
+                      exercise,
+                      index + 1
+                    );
+
+                    setCompletedSets({
+                      ...completedSets,
+                      [`${exercise.id}-${index}`]: true
+                    });
+
+                  }}
+                >
+                  {
+                    completedSets[
+                      `${exercise.id}-${index}`
+                    ]
+                      ? "✓"
+                      : "Complete"
+                  }
+                </button>
+              </div>
+
+          ))
+          }
 
         </div>
 
