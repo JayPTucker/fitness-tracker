@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+
+import "../css/WorkoutCalendar.css"
+
 function WorkoutCalendar() {
+    const navigate = useNavigate();
 
     const [workouts, setWorkouts] = useState([]);
-    const navigate = useNavigate();
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     useEffect(() => {
 
@@ -41,6 +47,33 @@ function WorkoutCalendar() {
 
     }, []);
 
+    const hasWorkout = (date) => {
+
+        return workouts.some((workout) => {
+
+            const workoutDate =
+            new Date(workout.completed_at);
+
+            return (
+            workoutDate.toDateString() ===
+            date.toDateString()
+            );
+
+        });
+
+    };
+
+    const selectedWorkouts =
+    workouts.filter((workout) => {
+
+        return (
+            new Date(workout.completed_at)
+                .toDateString() ===
+            selectedDate.toDateString()
+        );
+
+    });
+
     return (
 
         <div>
@@ -51,30 +84,89 @@ function WorkoutCalendar() {
 
             <h1>Workout Calendar</h1>
 
+            <Calendar
+                value={selectedDate}
+                onChange={setSelectedDate}
+                tileClassName={({ date }) => {
+
+                    if (hasWorkout(date)) {
+                        return "workout-day";
+                    }
+
+                }}
+            />
+
+            <hr />
+
+            <h2>
+                Workout History for{" "}
+                {selectedDate.toLocaleDateString("en-US", {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric"
+                })}
+
+            </h2>
+
             {
-                workouts.map((workout) => (
+            selectedWorkouts.length === 0 ? (
 
-                    <div key={workout.id}>
+                <p>No workout this day.</p>
 
-                        <h3>
-                            {
-                                new Date(
-                                    workout.completed_at
-                                ).toLocaleDateString()
-                            }
-                        </h3>
+            ) : (
 
-                        <p>
-                            {workout.duration_seconds / 60}
-                            {" "}
-                            minutes
-                        </p>
+                selectedWorkouts.map((workout) => (
 
-                    </div>
+                <div key={workout.id}>
+
+                    <h3>{workout.plan_name}</h3>
+
+                    <b>
+                    Workout Time: 
+                    {" "}
+                    {new Date(workout.started_at).toLocaleTimeString(
+                        "en-US",
+                        {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true
+                        }
+                    )}
+                    {" - "}
+                    {new Date(workout.completed_at).toLocaleTimeString(
+                        "en-US",
+                        {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true
+                        }
+                    )}                
+                    </b>
+
+                    <p>
+                    Duration:
+                    {" "}
+                    {Math.floor(
+                        workout.duration_seconds / 60
+                    )}
+                    {" "}
+                    min
+                    </p>
+
+                    <p>
+                    Volume:
+                    {" "}
+                    {workout.total_volume.toLocaleString()}
+                    {" "}
+                    lbs
+                    </p>
+
+                </div>
 
                 ))
-            }
 
+            )
+            }
         </div>
 
     );

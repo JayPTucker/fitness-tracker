@@ -1,0 +1,13 @@
+.workout-day {
+
+    background: #4caf4fdc !important;
+    color: white !important;
+    border-radius: 20px;
+
+}
+
+.react-calendar__tile--active, .react-calendar__tile:hover {
+    border: 1.5px solid rgb(0, 255, 0) !important;
+    background-color: rgba(0, 128, 0, 0.774) !important;
+    border-radius: 20px;
+}
