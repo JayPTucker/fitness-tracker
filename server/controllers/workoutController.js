@@ -362,3 +362,35 @@ export const getWorkoutSummary = async (req, res) => {
   }
 
 };
+
+export const getWorkoutHistory = async (req, res) => {
+
+    try {
+
+        const [history] =
+            await pool.execute(
+                `
+                SELECT *
+                FROM workout_sessions
+                WHERE
+                    user_id = ?
+                    AND completed_at IS NOT NULL
+                ORDER BY completed_at DESC
+                `,
+                [req.user.id]
+            );
+
+        res.json(history);
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            message:
+                "Failed to load history."
+        });
+
+    }
+
+};

@@ -6,7 +6,8 @@ import {
   startWorkoutSession,
   logSet,
   finishWorkoutSession,
-  getWorkoutSummary
+  getWorkoutSummary,
+  getWorkoutHistory
 } from "../controllers/workoutController.js";
 
 const router = express.Router();
@@ -23,5 +24,6 @@ router.post("/finish", authMiddleware, finishWorkoutSession);
 
 router.get("/summary", authMiddleware, getWorkoutSummary);
 
+router.get("/history", authMiddleware, getWorkoutHistory);
 
 export default router;
