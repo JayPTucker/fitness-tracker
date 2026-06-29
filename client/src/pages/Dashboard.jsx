@@ -10,6 +10,9 @@ function Dashboard() {
   // For GET on user_profiles on Dashboard
   const [profile, setProfile] = useState(null);
 
+  // Var for last workout
+  const [lastWorkout, setLastWorkout] = useState(null);
+
   // GET on user table on Dashboard
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,6 +44,25 @@ function Dashboard() {
           navigate("/setup");
         }
 
+        try {
+
+          const workoutResponse =
+            await axios.get(
+              "http://localhost:5000/api/workouts/summary",
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              }
+            );
+
+          setLastWorkout(workoutResponse.data);
+
+        } catch (error) {
+
+          console.log("No previous workout.");
+
+        }
       } catch (error) {
 
         console.error(error);
@@ -85,7 +107,58 @@ function Dashboard() {
             Start Today's Workout
         </button>
       </section>
+
+      <hr />
+
+      <h2>Last Workout</h2>
+
+      {
+        lastWorkout ? (
+          <>
+
+            <p>
+              Plan:
+              {" "}
+              {lastWorkout.plan_name}
+            </p>
+
+            <p>
+              Duration:
+              {" "}
+              {Math.floor(
+                lastWorkout.duration_seconds / 60
+              )}
+              {" "}
+              min
+            </p>
+
+            <p>
+              Volume:
+              {" "}
+              {lastWorkout.total_volume.toLocaleString()}
+              {" "}
+              lbs
+            </p>
+
+          </>
+        ) : (
+
+          <p>
+            No completed workouts yet.
+          </p>
+
+        )
+      }
+
+      <button
+        onClick={() =>
+          navigate("/history")
+        }
+      >
+        Workout History
+    </button>
     </div>
+
 
     
   );
