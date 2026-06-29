@@ -15,6 +15,7 @@ import Login from './pages/login';
 import Dashboard from './pages/Dashboard';
 import Setup from './pages/Setup';
 import Workout from "./pages/Workout";
+import WorkoutSummary from "./pages/WorkoutSummary";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -27,6 +28,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/setup" element={<Setup />} />
         <Route path="/workout" element={<Workout />} />
+        <Route path="/workout-summary" element={<WorkoutSummary />} />
+
       </Routes>
     </BrowserRouter>
   </GoogleOAuthProvider>

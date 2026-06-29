@@ -170,7 +170,7 @@ function Workout() {
 
         alert("Workout Complete!");
 
-        navigate('/dashboard')
+        navigate('/workout-summary')
 
         } catch (error) {
 

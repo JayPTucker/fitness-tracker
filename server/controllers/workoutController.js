@@ -317,3 +317,48 @@ export const finishWorkoutSession = async (req, res) => {
   }
 
 };
+
+export const getWorkoutSummary = async (req, res) => {
+
+  try {
+
+    const [sessions] = await pool.execute(
+      `
+      SELECT
+        ws.*,
+        wp.plan_name
+      FROM workout_sessions ws
+
+      JOIN workout_plans wp
+        ON ws.workout_plan_id = wp.id
+
+      WHERE ws.user_id = ?
+
+      ORDER BY ws.completed_at DESC
+
+      LIMIT 1
+      `,
+      [req.user.id]
+    );
+
+    if (sessions.length === 0) {
+
+      return res.status(404).json({
+        message: "No workout found."
+      });
+
+    }
+
+    res.json(sessions[0]);
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to load summary."
+    });
+
+  }
+
+};
