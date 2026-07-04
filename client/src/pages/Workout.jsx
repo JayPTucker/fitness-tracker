@@ -13,7 +13,8 @@ function Workout() {
   const [seconds, setSeconds] = useState(0);
   const [workoutDay, setWorkoutDay] = useState(null);
   const [sessionId, setSessionId] = useState(null);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [restSeconds, setRestSeconds] = useState(0);
 
   useEffect(() => {
 
@@ -76,15 +77,29 @@ function Workout() {
 
   useEffect(() => {
 
-    const interval = setInterval(() => {
+      const interval = setInterval(() => {
 
-        setSeconds((prev) => prev + 1);
+          setSeconds((prev) => prev + 1);
 
-    }, 1000);
+      }, 1000);
 
     return () => clearInterval(interval);
 
-}, []);
+  }, []);
+
+  useEffect(() => {
+
+    if (restSeconds <= 0) return;
+
+      const interval = setInterval(() => {
+
+        setRestSeconds(prev => prev - 1);
+
+      }, 1000);
+
+    return () => clearInterval(interval);
+
+  }, [restSeconds]);
 
   if (!plan) {
     return <h2>Loading Workout...</h2>;
@@ -147,6 +162,20 @@ function Workout() {
 
     };
 
+    const formatRestTime = () => {
+
+      const mins = Math.floor(restSeconds / 60);
+
+      const secs = restSeconds % 60;
+
+      return `${mins
+        .toString()
+        .padStart(2, "0")}:${secs
+        .toString()
+        .padStart(2, "0")}`;
+
+    };
+
     const handleFinishWorkout = async () => {
 
         const confirmFinish =
@@ -198,6 +227,14 @@ function Workout() {
         <h2>Workout Time</h2>
 
         <h3>{formatTime()}</h3>
+
+        <h2>Rest Timer</h2>
+
+        <h3>
+          {restSeconds > 0
+            ? formatRestTime()
+            : "Ready"}
+        </h3>
 
 
       <hr />
@@ -290,6 +327,8 @@ function Workout() {
                       exercise,
                       index + 1
                     );
+
+                    setRestSeconds(75);
 
                     setCompletedSets({
                       ...completedSets,

@@ -11,3 +11,10 @@
     background-color: rgba(0, 128, 0, 0.774) !important;
     border-radius: 20px;
 }
+
+.react-calendar__tile--now {
+    background: #ffe60080 !important;
+    color: rgb(0, 0, 0) !important;
+    border: 1.5px solid #ffe600 !important;
+    border-radius: 20px;
+}
