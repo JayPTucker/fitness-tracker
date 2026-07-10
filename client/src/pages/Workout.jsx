@@ -16,6 +16,7 @@ function Workout() {
   const navigate = useNavigate();
   const [restSeconds, setRestSeconds] = useState(0);
   const [activeRestSet, setActiveRestSet] = useState(null);
+  const [lastPerformance, setLastPerformance] = useState({});
 
   useEffect(() => {
 
@@ -63,6 +64,28 @@ function Workout() {
         setWorkoutDay(response.data.workoutDay);
 
         setExercises(response.data.exercises);
+
+        const performance = {};
+
+        for (const exercise of response.data.exercises) {
+          try {
+            const lastResponse = await axios.get(
+              `http://localhost:5000/api/workouts/last-performance/${exercise.exercise_id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              }
+            )
+            if (lastResponse.data) {
+              performance[exercise.id] = lastResponse.data;
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
+        setLastPerformance(performance);
 
       } catch (error) {
 
@@ -260,6 +283,7 @@ function Workout() {
             { length: exercise.sets },
             (_, index) => (
 
+              
               <div
                 key={index}
                 className={`setRow ${
@@ -269,13 +293,36 @@ function Workout() {
                 }`}
               >
 
+                {
+                  lastPerformance[exercise.id] && (
+
+                    <div className="previous-performance">
+
+                      <strong>Last Workout</strong>
+
+                      <p>
+
+                        {lastPerformance[exercise.id].weight_used}
+                        {" "}lbs ×{" "}
+                        {lastPerformance[exercise.id].reps_completed}
+
+                      </p>
+
+                    </div>
+
+                  )
+                }
                 <strong>
                   Set {index + 1}
                 </strong>
 
                 <input
                   type="number"
-                  placeholder="Weight"
+                  placeholder={
+                    lastPerformance[exercise.id]
+                      ? `Rec Weight (${parseInt(lastPerformance[exercise.id].weight_used) + 5})`
+                      : "Weight"
+                  }
                   value={
                     setData[`${exercise.id}-${index}`]?.weight || ""
                   }
@@ -343,13 +390,7 @@ function Workout() {
                 activeRestSet === `${exercise.id}-${index}` &&
                 restSeconds > 0 && (
 
-                  <p
-                    style={{
-                      marginTop: "8px",
-                      color: "#038109",
-                      fontWeight: "bold"
-                    }}
-                  >
+                  <p className="restTimer">
                     ⏱ Rest: {formatRestTime()}
                   </p>
 

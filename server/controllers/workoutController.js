@@ -394,3 +394,44 @@ export const getWorkoutHistory = async (req, res) => {
     }
 
 };
+
+export const getLastPerformance = async (req, res) => {
+
+  try {
+    const { exerciseId } = req.params;
+
+    const [rows] = await pool.execute(
+      `
+      SELECT
+        es.weight_used,
+        es.reps_completed,
+        ws.completed_at
+      FROM exercise_sets es
+
+      JOIN workout_sessions ws
+        ON es.workout_session_id = ws.id
+
+      WHERE
+        ws.user_id = ?
+        AND es.exercise_id = ?
+
+      ORDER BY ws.completed_at DESC
+
+      LIMIT 1
+      `,
+      [
+        req.user.id,
+        exerciseId
+      ]
+    );
+
+    if (rows.length === 0) {
+      return res.json(null);
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to load last performance." });
+  }
+}
