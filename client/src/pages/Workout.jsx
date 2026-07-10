@@ -15,6 +15,7 @@ function Workout() {
   const [sessionId, setSessionId] = useState(null);
   const navigate = useNavigate();
   const [restSeconds, setRestSeconds] = useState(0);
+  const [activeRestSet, setActiveRestSet] = useState(null);
 
   useEffect(() => {
 
@@ -226,16 +227,7 @@ function Workout() {
 
         <h2>Workout Time</h2>
 
-        <h3>{formatTime()}</h3>
-
-        <h2>Rest Timer</h2>
-
-        <h3>
-          {restSeconds > 0
-            ? formatRestTime()
-            : "Ready"}
-        </h3>
-
+        <h2>{formatTime()}</h2>
 
       <hr />
 
@@ -329,6 +321,7 @@ function Workout() {
                     );
 
                     setRestSeconds(75);
+                    setActiveRestSet(`${exercise.id}-${index}`);
 
                     setCompletedSets({
                       ...completedSets,
@@ -345,6 +338,23 @@ function Workout() {
                       : "Complete"
                   }
                 </button>
+
+                {
+                activeRestSet === `${exercise.id}-${index}` &&
+                restSeconds > 0 && (
+
+                  <p
+                    style={{
+                      marginTop: "8px",
+                      color: "#038109",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    ⏱ Rest: {formatRestTime()}
+                  </p>
+
+                )
+              }
               </div>
 
           ))
