@@ -1,5 +1,78 @@
 import pool from "../db/connection.js";
-import { generateWorkout } from "../services/workoutGenerator.js";
+import { buildWorkoutSplit, generateWorkout } from "../services/workoutGenerator.js";
+
+async function createWorkoutPlanForUser(userId, profile) {
+  const workoutPlan = await generateWorkout(profile);
+
+  const [result] = await pool.execute(
+    `
+    INSERT INTO workout_plans
+    (
+        user_id,
+        plan_name,
+        goal,
+        days_per_week
+    )
+    VALUES (?, ?, ?, ?)
+    `,
+    [
+      userId,
+      `${profile.goal} Plan`,
+      profile.goal,
+      profile.workout_days_per_week
+    ]
+  );
+
+  const workoutPlanId = result.insertId;
+  let workoutDay = 1;
+
+  for (const workout of workoutPlan.workouts) {
+    let exerciseOrder = 1;
+
+    for (const exercise of workout.exercises) {
+      await pool.execute(
+        `
+        INSERT INTO workout_plan_exercises
+        (
+            workout_plan_id,
+            workout_day,
+            exercise_id,
+            exercise_order,
+            sets,
+            reps
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+        `,
+        [
+          workoutPlanId,
+          workoutDay,
+          exercise.id,
+          exerciseOrder,
+          3,
+          "8-12"
+        ]
+      );
+
+      exerciseOrder++;
+    }
+
+    workoutDay++;
+  }
+
+  const [plans] = await pool.execute(
+    `
+    SELECT *
+    FROM workout_plans
+    WHERE id = ?
+    `,
+    [workoutPlanId]
+  );
+
+  return {
+    plan: plans[0],
+    workoutPlan
+  };
+}
 
 export const generateWorkoutPlan = async (req, res) => {
   try {
@@ -22,78 +95,13 @@ export const generateWorkoutPlan = async (req, res) => {
 
     const profile = profiles[0];
 
-    // Generate the workout
-    const workoutPlan = await generateWorkout(profile);
-
-    const [result] = await pool.execute(
-        `
-        INSERT INTO workout_plans
-        (
-            user_id,
-            plan_name,
-            goal,
-            days_per_week
-        )
-        VALUES (?, ?, ?, ?)
-        `,
-        [
-            req.user.id,
-            `${profile.goal} Plan`,
-            profile.goal,
-            profile.workout_days_per_week
-        ]
-    );
-
-    const workoutPlanId = result.insertId;
-
-    let workoutDay = 1;
-
-    for (const workout of workoutPlan.workouts) {
-
-        let exerciseOrder = 1;
-
-        for (const exercise of workout.exercises) {
-
-            await pool.execute(
-            `
-            INSERT INTO workout_plan_exercises
-            (
-                workout_plan_id,
-                workout_day,
-                exercise_id,
-                exercise_order,
-                sets,
-                reps
-            )
-            VALUES (?, ?, ?, ?, ?, ?)
-            `,
-            [
-                workoutPlanId,
-                workoutDay,
-                exercise.id,
-                exerciseOrder,
-                3,
-                "8-12"
-            ]
-        );
-
-        exerciseOrder++;
-
-    }
-
-    workoutDay++;
-
-    }
+    const { workoutPlan, plan } = await createWorkoutPlanForUser(req.user.id, profile);
 
     res.json({
         message: "Workout plan generated successfully!",
-        workoutPlanId
+        workoutPlanId: plan.id,
+        workoutPlan
     });
-
-    console.log(workoutPlan);
-
-    // Return it to the frontend/Postman
-    res.json(workoutPlan);
 
   } catch (error) {
 
@@ -120,16 +128,59 @@ export const getCurrentWorkoutPlan = async (req, res) => {
       [req.user.id]
     );
 
-    if (plans.length === 0) {
-      return res.status(404).json({
-        message: "No workout plan found."
-      });
+    let plan = plans[0];
+
+    if (!plan) {
+      const [profiles] = await pool.execute(
+        `
+        SELECT *
+        FROM user_profiles
+        WHERE user_id = ?
+        `,
+        [req.user.id]
+      );
+
+      if (profiles.length === 0) {
+        return res.status(404).json({
+          message: "Profile not found."
+        });
+      }
+
+      const createdPlan = await createWorkoutPlanForUser(req.user.id, profiles[0]);
+      plan = createdPlan.plan;
     }
 
-    const plan = plans[0];
-
     // Fetch every exercise for that plan
-    const workoutDay = 1; // Temporary. It'll be dynamic later
+    const split = buildWorkoutSplit(plan.days_per_week);
+
+    // Determine the user's next workout day based on their latest workout session.
+    const [sessions] = await pool.execute(
+      `
+      SELECT *
+      FROM workout_sessions
+      WHERE user_id = ?
+        AND workout_plan_id = ?
+      ORDER BY started_at DESC
+      LIMIT 1
+      `,
+      [req.user.id, plan.id]
+    );
+
+    let workoutDay = 1;
+
+    if (sessions.length > 0) {
+      const lastSession = sessions[0];
+
+      if (!lastSession.completed_at) {
+        // Continue the current workout day if the last session is still active.
+        workoutDay = lastSession.workout_day;
+      } else {
+        // Move to the next day in the plan after a completed session.
+        workoutDay = (lastSession.workout_day % split.length) + 1;
+      }
+    }
+
+    const workoutDayName = split[workoutDay - 1] || split[split.length - 1];
 
     const [exercises] = await pool.execute(
     `
@@ -161,6 +212,7 @@ export const getCurrentWorkoutPlan = async (req, res) => {
     res.json({
         plan,
         workoutDay,
+        workoutDayName,
         exercises
     });
 

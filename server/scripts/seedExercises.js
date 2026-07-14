@@ -14,18 +14,16 @@ const exercises = JSON.parse(
   )
 );
 
-console.log(exercises);
-
 async function seedExercises() {
-    await pool.execute(
-    `
-    DELETE FROM exercises
-    `
-    );
-}
+  try {
+    await pool.execute(`DELETE FROM exercise_sets`);
+    await pool.execute(`DELETE FROM workout_sessions`);
+    await pool.execute(`DELETE FROM workout_plan_exercises`);
+    await pool.execute(`DELETE FROM workout_plans`);
+    await pool.execute(`DELETE FROM exercises`);
 
-for (const exercise of exercises) {
-    await pool.execute(
+    for (const exercise of exercises) {
+      await pool.execute(
         `
         INSERT INTO exercises
         (
@@ -40,21 +38,24 @@ for (const exercise of exercises) {
         VALUES (?, ?, ?, ?, ?, ?, ?)
         `,
         [
-            exercise.exercise_name,
-            exercise.muscle_group,
-            exercise.secondary_muscle,
-            exercise.equipment,
-            exercise.difficulty,
-            exercise.exercise_type,
-            exercise.instructions
+          exercise.exercise_name,
+          exercise.muscle_group,
+          exercise.secondary_muscle,
+          exercise.equipment,
+          exercise.difficulty,
+          exercise.exercise_type,
+          exercise.instructions
         ]
-    );
+      );
+    }
+
+    console.log(`${exercises.length} exercises inserted successfully!`);
+  } catch (error) {
+    console.error("Failed to seed exercises:", error);
+    process.exitCode = 1;
+  } finally {
+    await pool.end();
+  }
 }
-
-console.log(
-  `${exercises.length} exercises inserted!`
-);
-
-process.exit();
 
 seedExercises();

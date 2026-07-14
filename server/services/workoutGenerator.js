@@ -80,6 +80,62 @@ const workoutTemplates = {
       Legs: 2,
       Shoulders: 1
     }
+  },
+
+  "Chest Focus": {
+    primary: [
+      "Chest",
+      "Shoulders",
+      "Triceps"
+    ],
+
+    exerciseCounts: {
+      Chest: 4,
+      Shoulders: 1,
+      Triceps: 2
+    }
+  },
+
+  "Back Focus": {
+    primary: [
+      "Back",
+      "Biceps",
+      "Shoulders"
+    ],
+
+    exerciseCounts: {
+      Back: 4,
+      Biceps: 2,
+      Shoulders: 1
+    }
+  },
+
+  "Shoulders Focus": {
+    primary: [
+      "Shoulders",
+      "Chest",
+      "Triceps"
+    ],
+
+    exerciseCounts: {
+      Shoulders: 3,
+      Chest: 1,
+      Triceps: 2
+    }
+  },
+
+  "Arms Focus": {
+    primary: [
+      "Biceps",
+      "Triceps",
+      "Chest"
+    ],
+
+    exerciseCounts: {
+      Biceps: 3,
+      Triceps: 2,
+      Chest: 1
+    }
   }
 
 };
@@ -160,31 +216,47 @@ async function getExercisesForMuscle(
 
 }
 
-export async function generateWorkout(profile) {
+export function buildWorkoutSplit(daysPerWeek) {
 
-  let split = [];
+  switch (Number(daysPerWeek)) {
 
-  switch (profile.workout_days_per_week) {
+    case 2:
+      return ["Upper", "Lower"];
 
     case 3:
-      split = ["Push", "Pull", "Legs"];
-      break;
+      return ["Push", "Pull", "Legs"];
 
     case 4:
-      split = ["Upper", "Lower", "Upper", "Lower"];
-      break;
+      return ["Upper", "Lower", "Upper", "Lower"];
 
     case 5:
-      split = ["Push", "Pull", "Legs", "Upper", "Lower"];
-      break;
+      return [
+        "Chest Focus",
+        "Back Focus",
+        "Legs",
+        "Shoulders Focus",
+        "Arms Focus"
+      ];
 
     case 6:
-      split = ["Push", "Pull", "Legs", "Push", "Pull", "Legs"];
-      break;
+      return [
+        "Chest Focus",
+        "Back Focus",
+        "Legs",
+        "Chest Focus",
+        "Back Focus",
+        "Legs"
+      ];
 
     default:
-      split = ["Full Body", "Full Body", "Full Body"];
+      return ["Full Body", "Full Body", "Full Body"];
   }
+
+}
+
+export async function generateWorkout(profile) {
+
+  const split = buildWorkoutSplit(profile.workout_days_per_week);
 
   const workouts = [];
 

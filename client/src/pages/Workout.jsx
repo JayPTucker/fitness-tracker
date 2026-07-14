@@ -12,6 +12,7 @@ function Workout() {
   const [completedSets, setCompletedSets] = useState({});
   const [seconds, setSeconds] = useState(0);
   const [workoutDay, setWorkoutDay] = useState(null);
+  const [workoutDayName, setWorkoutDayName] = useState("");
   const [sessionId, setSessionId] = useState(null);
   const navigate = useNavigate();
   const [restSeconds, setRestSeconds] = useState(0);
@@ -24,6 +25,7 @@ function Workout() {
     setSessionId(sessionData.sessionId);
     setPlan(sessionData.plan);
     setWorkoutDay(sessionData.workoutDay);
+    setWorkoutDayName(sessionData.workoutDayName || "");
     setExercises(sessionData.exercises);
     setSetData(sessionData.setData || {});
     setCompletedSets(sessionData.completedSets || {});
@@ -75,6 +77,7 @@ function Workout() {
 
       setPlan(response.data.plan);
       setWorkoutDay(response.data.workoutDay);
+      setWorkoutDayName(response.data.workoutDayName || "");
 
       setExercises(response.data.exercises);
 
@@ -156,6 +159,7 @@ function Workout() {
         sessionId,
         plan,
         workoutDay,
+        workoutDayName,
         exercises,
         setData,
         completedSets,
@@ -358,7 +362,10 @@ function Workout() {
         <a href="/dashboard">Dashboard</a>
         <h1>{plan.plan_name}</h1>
 
-        <h2>Day {workoutDay}</h2>
+        <h2>
+          Day {workoutDay}
+          {workoutDayName ? ` • ${workoutDayName}` : ""}
+        </h2>
 
         <h3>{plan.goal}</h3>
 

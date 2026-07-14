@@ -364,5 +364,113 @@
     "difficulty": "Beginner",
     "exercise_type": "Isolation",
     "instructions": "Crunch downward while keeping your hips stationary."
+  },
+  {
+    "exercise_name": "Incline Push Up",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Triceps",
+    "equipment": "Bodyweight",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Perform a push up with your hands elevated to increase chest involvement."
+  },
+  {
+    "exercise_name": "Smith Machine Incline Press",
+    "muscle_group": "Chest",
+    "secondary_muscle": "Shoulders",
+    "equipment": "Smith Machine",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Press the bar from an incline bench while keeping your torso stable."
+  },
+  {
+    "exercise_name": "Chest Supported Row",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Machine",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Pull the handles toward your torso while keeping your chest supported."
+  },
+  {
+    "exercise_name": "Resistance Band Lat Pulldown",
+    "muscle_group": "Back",
+    "secondary_muscle": "Biceps",
+    "equipment": "Resistance Bands",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Anchor the band overhead and pull it toward your upper chest."
+  },
+  {
+    "exercise_name": "Goblet Squat",
+    "muscle_group": "Legs",
+    "secondary_muscle": "Glutes",
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "exercise_type": "Compound",
+    "instructions": "Hold a dumbbell at your chest and squat until your thighs are parallel."
+  },
+  {
+    "exercise_name": "Dumbbell Romanian Deadlift",
+    "muscle_group": "Legs",
+    "secondary_muscle": "Glutes",
+    "equipment": "Dumbbells",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Hinge at the hips while lowering the dumbbells along your legs."
+  },
+  {
+    "exercise_name": "Seated Smith Shoulder Press",
+    "muscle_group": "Shoulders",
+    "secondary_muscle": "Triceps",
+    "equipment": "Smith Machine",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Press the bar overhead from a seated position with control."
+  },
+  {
+    "exercise_name": "Face Pull",
+    "muscle_group": "Shoulders",
+    "secondary_muscle": "Back",
+    "equipment": "Cable",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Pull the rope toward your face while keeping your elbows high."
+  },
+  {
+    "exercise_name": "Resistance Band Bicep Curl",
+    "muscle_group": "Biceps",
+    "secondary_muscle": "Forearms",
+    "equipment": "Resistance Bands",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Curl the band upward while keeping your elbows close to your sides."
+  },
+  {
+    "exercise_name": "Close Grip Push Up",
+    "muscle_group": "Triceps",
+    "secondary_muscle": "Chest",
+    "equipment": "Bodyweight",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Keep your hands close together and lower your chest toward the floor."
+  },
+  {
+    "exercise_name": "Kettlebell Swing",
+    "muscle_group": "Legs",
+    "secondary_muscle": "Glutes",
+    "equipment": "Kettlebell",
+    "difficulty": "Intermediate",
+    "exercise_type": "Compound",
+    "instructions": "Drive the kettlebell through your hips and snap your hips forward."
+  },
+  {
+    "exercise_name": "Dead Bug",
+    "muscle_group": "Core",
+    "secondary_muscle": "Hip Flexors",
+    "equipment": "Bodyweight",
+    "difficulty": "Beginner",
+    "exercise_type": "Isolation",
+    "instructions": "Extend opposite arm and leg while keeping your lower back pressed down."
   }
 ]
