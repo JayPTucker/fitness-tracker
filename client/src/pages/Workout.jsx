@@ -265,6 +265,18 @@ function Workout() {
 
     };
 
+    const adjustRestTimer = (delta) => {
+      setRestSeconds((prev) => {
+        const nextValue = prev + delta;
+        return nextValue > 0 ? nextValue : 0;
+      });
+    };
+
+    const cancelRestTimer = () => {
+      setRestSeconds(0);
+      setActiveRestSet(null);
+    };
+
     const formatTime = () => {
 
         const hrs = Math.floor(seconds / 3600);
@@ -491,11 +503,22 @@ function Workout() {
                 {
                 activeRestSet === `${exercise.id}-${index}` &&
                 restSeconds > 0 && (
-
-                  <p className="restTimer">
-                    ⏱ Rest: {formatRestTime()}
-                  </p>
-
+                  <div style={{ marginTop: "8px" }}>
+                    <p className="restTimer">
+                      ⏱ Rest: {formatRestTime()}
+                    </p>
+                    <div style={{ display: "flex", gap: "8px", marginTop: "6px" }}>
+                      <button type="button" onClick={() => adjustRestTimer(15)}>
+                        +15s
+                      </button>
+                      <button type="button" onClick={() => adjustRestTimer(-15)}>
+                        -15s
+                      </button>
+                      <button type="button" onClick={cancelRestTimer}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
                 )
               }
               </div>
